@@ -5,6 +5,10 @@ module.exports = {
     './components/**/*.{html,js}',
   ],
   theme: {
+    fontFamily: {
+      heading: ['"Playfair Display"'],
+      body: ['"Poppins"'],
+    },
     extend: {
       gridTemplateColumns: {
         // Simple 16 column grid

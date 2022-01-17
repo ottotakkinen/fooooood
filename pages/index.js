@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import Recipe from '../components/Recipe';
@@ -72,28 +72,59 @@ const MOCK_RECIPES = [
 ];
 
 const Home = () => {
+  const [searchInput, setSearchInput] = useState('');
+
+  const filteredRecipes = MOCK_RECIPES.filter((recipe) => {
+    if (recipe.title.toLowerCase().includes(searchInput.toLowerCase())) {
+      return true;
+    }
+
+    let tagFound = false;
+
+    recipe.tags.forEach((tag) => {
+      if (tag.toLowerCase().includes(searchInput.toLowerCase())) {
+        tagFound = true;
+      }
+    });
+
+    return tagFound;
+  });
+
   return (
-    <div className="flex flex-col min-h-screen bg-zinc-900 text-slate-100 items-center">
-      <nav className="container flex justify-between items-center py-4 px-8  ">
-        <a className="text-3xl font-bold">Fooooood</a>
-        <a href="#">Login</a>
-      </nav>
-      <main className="container px-8 h-auto mb-auto">
-        <form className="w-full relative text-black my-8">
+    <div className="font-body flex flex-col min-h-screen bg-zinc-100 text-slate-900 items-center">
+      <nav className="grid gap-2 w-full grid-cols-4 text-center py-4 px-8 fixed bg-zinc-100">
+        <a className="text-4xl font-extrabold font-heading col-span-4 p-4">
+          Fooooood
+        </a>
+
+        <form className="w-full max-w-md relative text-slate-800 col-span-3">
           <input
             type="text"
-            className="h-10 py-2 px-4 w-full rounded-full"
+            className="h-10 py-2 px-4 w-full  rounded-full shadow-md"
             placeholder="Search for recipe"
+            onChange={(e) => setSearchInput(e.target.value)}
           />
-          <button className="absolute top-0 right-0 h-10 px-4">
+          <button
+            onClick={(e) => e.preventDefault()}
+            className="absolute top-0 right-0 h-10 px-4"
+          >
             <SearchIcon />
           </button>
         </form>
-        {MOCK_RECIPES.map((recipe) => (
-          <Recipe key={recipe.id} recipe={recipe} />
-        ))}
+        <button className="h-10 col-span-1 font-bold text-xl rounded-full bg-yellow-300 text-slate-900 shadow-md">
+          New
+        </button>
+      </nav>
+      <main className="container px-8 mt-40 mb-auto min-h-full max-w-xl">
+        {filteredRecipes &&
+          filteredRecipes.map((recipe) => (
+            <Recipe key={recipe.id} recipe={recipe} />
+          ))}
+        {filteredRecipes.length === 0 && (
+          <p className="text-center">No recipes found.</p>
+        )}
       </main>
-      <footer className="w-full px-8 bg-zinc-900 text-slate-400 align-middle text-center">
+      <footer className="w-full py-2 px-8 bg-zinc-900 text-zinc-400 align-middle text-center">
         <p className="text-sm">Made with coffee by Otto Takkinen</p>
       </footer>
     </div>
