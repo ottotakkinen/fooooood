@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import Recipe from '../components/Recipe';
+import NewRecipe from '../components/NewRecipe';
 
 const MOCK_RECIPES = [
   {
@@ -73,6 +74,7 @@ const MOCK_RECIPES = [
 
 const Home = () => {
   const [searchInput, setSearchInput] = useState('');
+  const [showNewRecipeModal, setShowNewRecipeModal] = useState(false);
 
   const filteredRecipes = MOCK_RECIPES.filter((recipe) => {
     if (recipe.title.toLowerCase().includes(searchInput.toLowerCase())) {
@@ -89,6 +91,10 @@ const Home = () => {
 
     return tagFound;
   });
+
+  if (showNewRecipeModal) {
+    return <NewRecipe setShowNewRecipeModal={setShowNewRecipeModal} />;
+  }
 
   return (
     <div className="font-body flex flex-col min-h-screen bg-zinc-100 text-slate-900 items-center">
@@ -111,7 +117,10 @@ const Home = () => {
             <SearchIcon />
           </button>
         </form>
-        <button className="h-10 col-span-1 font-bold text-xl rounded-full bg-yellow-300 text-slate-900 shadow-md">
+        <button
+          className="h-10 col-span-1 font-bold text-xl rounded-full bg-yellow-300 text-slate-900 shadow-md"
+          onClick={() => setShowNewRecipeModal(true)}
+        >
           New
         </button>
       </nav>
