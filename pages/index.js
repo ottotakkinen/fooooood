@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import SearchIcon from '@mui/icons-material/Search';
 import Recipe from '../components/Recipe';
-import NewRecipe from '../components/NewRecipe';
+import NewRecipe from '../components/NewRecipe/NewRecipe';
+import Button from '../components/UI/Button';
+import SearchBar from '../components/UI/SearchBar';
 
 const MOCK_RECIPES = [
   {
@@ -84,7 +85,9 @@ const Home = () => {
   });
 
   const addRecipe = (recipe) => {
-    setRecipes((prev) => [...prev, recipe]);
+    const id = Math.ceil(100000 * Math.random());
+    const newRecipe = { ...recipe, id };
+    setRecipes((prev) => [...prev, newRecipe]);
   };
 
   if (showNewRecipeModal) {
@@ -103,26 +106,8 @@ const Home = () => {
           Fooooood
         </a>
 
-        <form className="w-full max-w-md relative text-slate-800 col-span-3">
-          <input
-            type="text"
-            className="h-10 py-2 px-4 w-full  rounded-full shadow-md"
-            placeholder="Search for recipe"
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-          <button
-            onClick={(e) => e.preventDefault()}
-            className="absolute top-0 right-0 h-10 px-4"
-          >
-            <SearchIcon />
-          </button>
-        </form>
-        <button
-          className="h-10 col-span-1 font-bold text-xl rounded-full bg-yellow-300 text-slate-900 shadow-md"
-          onClick={() => setShowNewRecipeModal(true)}
-        >
-          New
-        </button>
+        <SearchBar onChange={setSearchInput} />
+        <Button onClick={() => setShowNewRecipeModal(true)}>New</Button>
       </nav>
       <main className="container px-8 mt-40 mb-auto min-h-full max-w-xl">
         {filteredRecipes &&

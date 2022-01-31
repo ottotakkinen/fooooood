@@ -11,8 +11,8 @@ module.exports = {
     },
     extend: {
       gridTemplateColumns: {
-        // Simple 16 column grid
         311: '3fr 1fr 1fr',
+        ingredient: '8fr 4fr 3fr 1fr',
       },
     },
   },
