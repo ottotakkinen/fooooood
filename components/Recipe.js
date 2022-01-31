@@ -9,7 +9,7 @@ const Recipe = ({ recipe }) => {
       </h2>
       {/* <h3 className="my-2">Main ingredients</h3> */}
       <div className="flex flex-wrap gap-2">
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <span key={tag} className="text-sm py-1 px-4 bg-zinc-200 rounded-lg">
             {tag}
           </span>

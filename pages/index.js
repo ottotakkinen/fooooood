@@ -8,19 +8,15 @@ const MOCK_RECIPES = [
   {
     id: 1,
     title: 'Härkis-makaronilaatikko',
-    ingredients: {
-      main: [
-        { name: 'Härkis', amount: '1', unit: 'pakkaus' },
-        { name: 'Makaroni', amount: '400', unit: 'g' },
-        { name: 'Kananmuna', amount: '1', unit: 'kpl' },
-        { name: 'Kaurajuoma', amount: '5', unit: 'dl' },
-      ],
-      spices: [
-        { name: 'Suola', amount: '2', unit: 'tl' },
-        { name: 'Pippuri', amount: '1', unit: 'tl' },
-        { name: 'Paprikajauhe', amount: '1', unit: 'tl' },
-      ],
-    },
+    ingredients: [
+      { name: 'Härkis', amount: '1', unit: 'pakkaus' },
+      { name: 'Makaroni', amount: '400', unit: 'g' },
+      { name: 'Kananmuna', amount: '1', unit: 'kpl' },
+      { name: 'Kaurajuoma', amount: '5', unit: 'dl' },
+      { name: 'Suola', amount: '2', unit: 'tl' },
+      { name: 'Pippuri', amount: '1', unit: 'tl' },
+      { name: 'Paprikajauhe', amount: '1', unit: 'tl' },
+    ],
     steps: [
       'Keitä makaroni',
       'Sekoita kananmunat, kaurajuoma ja mausteet',
@@ -32,14 +28,12 @@ const MOCK_RECIPES = [
   {
     id: 2,
     title: 'Perunamuusi',
-    ingredients: {
-      main: [
-        { name: 'Peruna', amount: '1', unit: 'kg' },
-        { name: 'Kaurajuoma', amount: '1', unit: 'dl' },
-        { name: 'Margariini', amount: '2', unit: 'rkl' },
-      ],
-      spices: [{ name: 'Suola', amount: '2', unit: 'tl' }],
-    },
+    ingredients: [
+      { name: 'Peruna', amount: '1', unit: 'kg' },
+      { name: 'Kaurajuoma', amount: '1', unit: 'dl' },
+      { name: 'Margariini', amount: '2', unit: 'rkl' },
+      { name: 'Suola', amount: '2', unit: 'tl' },
+    ],
     steps: [
       'Keitä kuoritut perunat',
       'Muussaa ja lisää kaurajuoma sekä margariini',
@@ -49,19 +43,15 @@ const MOCK_RECIPES = [
   {
     id: 3,
     title: 'Härkis-makaronilaatikko',
-    ingredients: {
-      main: [
-        { name: 'Härkis', amount: '1', unit: 'pakkaus' },
-        { name: 'Makaroni', amount: '400', unit: 'g' },
-        { name: 'Kananmuna', amount: '1', unit: 'kpl' },
-        { name: 'Kaurajuoma', amount: '5', unit: 'dl' },
-      ],
-      spices: [
-        { name: 'Suola', amount: '2', unit: 'tl' },
-        { name: 'Pippuri', amount: '1', unit: 'tl' },
-        { name: 'Paprikajauhe', amount: '1', unit: 'tl' },
-      ],
-    },
+    ingredients: [
+      { name: 'Härkis', amount: '1', unit: 'pakkaus' },
+      { name: 'Makaroni', amount: '400', unit: 'g' },
+      { name: 'Kananmuna', amount: '1', unit: 'kpl' },
+      { name: 'Kaurajuoma', amount: '5', unit: 'dl' },
+      { name: 'Suola', amount: '2', unit: 'tl' },
+      { name: 'Pippuri', amount: '1', unit: 'tl' },
+      { name: 'Paprikajauhe', amount: '1', unit: 'tl' },
+    ],
     steps: [
       'Keitä makaroni',
       'Sekoita kananmunat, kaurajuoma ja mausteet',
@@ -75,8 +65,9 @@ const MOCK_RECIPES = [
 const Home = () => {
   const [searchInput, setSearchInput] = useState('');
   const [showNewRecipeModal, setShowNewRecipeModal] = useState(false);
+  const [recipes, setRecipes] = useState(MOCK_RECIPES);
 
-  const filteredRecipes = MOCK_RECIPES.filter((recipe) => {
+  const filteredRecipes = recipes.filter((recipe) => {
     if (recipe.title.toLowerCase().includes(searchInput.toLowerCase())) {
       return true;
     }
@@ -92,8 +83,17 @@ const Home = () => {
     return tagFound;
   });
 
+  const addRecipe = (recipe) => {
+    setRecipes((prev) => [...prev, recipe]);
+  };
+
   if (showNewRecipeModal) {
-    return <NewRecipe setShowNewRecipeModal={setShowNewRecipeModal} />;
+    return (
+      <NewRecipe
+        setShowNewRecipeModal={setShowNewRecipeModal}
+        addRecipe={addRecipe}
+      />
+    );
   }
 
   return (
