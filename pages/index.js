@@ -4,6 +4,8 @@ import Recipe from '../components/Recipe';
 import NewRecipe from '../components/NewRecipe/NewRecipe';
 import Button from '../components/UI/Button';
 import SearchBar from '../components/UI/SearchBar';
+import NavBar from '../components/NavBar';
+import MainContainer from '../components/UI/MainContainer';
 
 const MOCK_RECIPES = [
   {
@@ -100,16 +102,14 @@ const Home = () => {
   }
 
   return (
-    <div className="font-body flex flex-col min-h-screen bg-zinc-100 text-slate-900 items-center">
-      <nav className="grid gap-2 w-full grid-cols-4 text-center py-4 px-8 fixed bg-zinc-100">
-        <a className="text-4xl font-extrabold font-heading col-span-4 p-4">
-          Fooooood
-        </a>
+    <MainContainer>
+      <NavBar />
 
+      <div className="grid grid-cols-4 gap-4 max-w-xl w-full mb-8">
         <SearchBar onChange={setSearchInput} />
         <Button onClick={() => setShowNewRecipeModal(true)}>New</Button>
-      </nav>
-      <main className="container px-8 mt-40 mb-auto min-h-full max-w-xl">
+      </div>
+      <main className="container px-8 mb-auto min-h-full max-w-xl">
         {filteredRecipes &&
           filteredRecipes.map((recipe) => (
             <Recipe key={recipe.id} recipe={recipe} />
@@ -121,7 +121,7 @@ const Home = () => {
       <footer className="w-full py-2 px-8 bg-zinc-900 text-zinc-400 align-middle text-center">
         <p className="text-sm">Made with coffee by Otto Takkinen</p>
       </footer>
-    </div>
+    </MainContainer>
   );
 };
 

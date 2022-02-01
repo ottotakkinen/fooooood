@@ -9,6 +9,9 @@ const Button = ({ variant = 'primary', children, ...rest }) => {
   if (variant === 'secondary') {
     classNames = 'w-full py-2 px-4 bg-zinc-800 text-slate-50 rounded-full';
   }
+  if (variant === 'simple') {
+    classNames = 'w-full py-2 px-4 underline rounded-full';
+  }
   return (
     <button className={classNames} {...rest}>
       {children}

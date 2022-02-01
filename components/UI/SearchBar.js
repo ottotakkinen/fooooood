@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar = ({ onChange }) => {
   return (
-    <form className="w-full max-w-md relative text-slate-800 col-span-3">
+    <form className="max-w-md relative text-slate-800 col-span-3">
       <input
         type="text"
         className="py-2 px-4 w-full rounded-full shadow-md"
