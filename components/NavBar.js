@@ -9,21 +9,17 @@ const NavBar = () => {
         Fooooood
       </h1>
       <nav className="ml-auto flex flex-row">
-        <Button variant="simple">
-          <Link href="/" passHref>
-            Home
-          </Link>
-        </Button>
-        <Button variant="simple">
-          <Link href="/login" passHref>
-            Login
-          </Link>
-        </Button>
-        <Button variant="secondary">
-          <Link href="/signup" passHref>
-            Sign&nbsp;up
-          </Link>
-        </Button>
+        <Link href="/" passHref>
+          Home
+        </Link>
+
+        <Link href="/login" passHref>
+          Login
+        </Link>
+
+        <Link href="/signup" passHref>
+          Sign&nbsp;up
+        </Link>
       </nav>
     </header>
   );
