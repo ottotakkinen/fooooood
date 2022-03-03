@@ -63,6 +63,16 @@ const MOCK_RECIPES = [
     ],
     tags: ['Kasvis', 'Uuniruoka'],
   },
+  {
+    id: 4,
+    title: 'Kilju',
+    ingredients: [
+      { name: 'Sokeri', amount: '1', unit: 'pakkaus' },
+      { name: 'Hiiva', amount: '400', unit: 'g' },
+    ],
+    steps: ['Ota huikka'],
+    tags: ['Kasvis', 'Helppo', 'Herkku'],
+  },
 ];
 
 const Home = () => {
