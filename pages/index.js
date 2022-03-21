@@ -115,11 +115,15 @@ const Home = () => {
     <MainContainer>
       <NavBar />
 
-      <div className="grid grid-cols-4 gap-4 max-w-xl w-full mb-8">
-        <SearchBar onChange={setSearchInput} />
-        <Button onClick={() => setShowNewRecipeModal(true)}>New</Button>
-      </div>
       <main className="container px-8 mb-auto min-h-full max-w-xl">
+        <h2 className="text-3xl font-bold font-heading text-zinc-900 mb-8 text-center">
+          Public recipes
+        </h2>
+        <div className="grid grid-cols-4 gap-4 max-w-xl w-full mb-8">
+          <SearchBar onChange={setSearchInput} />
+          <Button onClick={() => setShowNewRecipeModal(true)}>New</Button>
+        </div>
+
         {filteredRecipes &&
           filteredRecipes.map((recipe) => (
             <Recipe key={recipe.id} recipe={recipe} />
