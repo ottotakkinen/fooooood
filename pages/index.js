@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
 
 import Recipe from '../components/Recipe';
 import NewRecipe from '../components/NewRecipe/NewRecipe';
