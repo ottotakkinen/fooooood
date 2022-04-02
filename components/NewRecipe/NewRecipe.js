@@ -4,15 +4,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import IngredientRow from './IngredientRow';
 import Button from '../UI/Button';
 import StepRow from './StepRow';
+import { useRouter } from 'next/router';
 
-const NewRecipe = ({ setShowNewRecipeModal, addRecipe }) => {
+const NewRecipe = () => {
+  const [loading, setLoading] = useState(false);
   const [ingredientRows, setIngredientRows] = useState([]);
   const [stepRows, setStepRows] = useState([]);
 
-  useEffect(() => {
-    addNewIngredientRow();
-    addNewStepRow();
-  }, [addNewIngredientRow, addNewStepRow]);
+  const router = useRouter();
 
   const removeIngredientRow = useCallback((id) => {
     setIngredientRows((rows) => rows.filter((el) => el.props.id !== id));
@@ -60,39 +59,44 @@ const NewRecipe = ({ setShowNewRecipeModal, addRecipe }) => {
     [removeStepRow]
   );
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    addNewIngredientRow();
+    addNewStepRow();
+  }, [addNewIngredientRow, addNewStepRow]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(e.target);
-
     const data = {};
-
     data.title = formData.get('title');
-
     const ingredients = formData.getAll('ingredient');
     const amounts = formData.getAll('amount');
     const units = formData.getAll('unit');
-
     data.ingredients = ingredients.map((ingredient, iter) => ({
       ingredient: ingredient,
       amount: amounts[iter],
       unit: units[iter],
     }));
-
     data.steps = formData.getAll('step');
-
-    data.tags = [...new Set(formData.get('tags').split(' '))];
-
+    data.tags = [...new Set(formData.get('tags').split(' '))]; // get unique tags by spreading a Set
     data.public = formData.get('public') === 'on' ? true : false;
 
-    console.log(data);
-    addRecipe(data);
-    setShowNewRecipeModal(false);
+    try {
+      await fetch('/api/post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      await router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="font-body w-full min-h-screen bg-zinc-100 flex flex-col items-center overflow-y-scroll">
       <div className="w-full md:max-w-2xl  bg-zinc-100 z-50 p-4 flex flex-col">
-        <button onClick={() => setShowNewRecipeModal(false)}>back arrow</button>
         <h1 className="text-4xl font-extrabold font-heading py-4 mb-8">
           Add new recipe
         </h1>
@@ -163,7 +167,9 @@ const NewRecipe = ({ setShowNewRecipeModal, addRecipe }) => {
             <label htmlFor="public">Set public - everyone can see it!</label>
           </div>
 
-          <Button type="submit">Save</Button>
+          <Button type="submit" loading={loading}>
+            Save
+          </Button>
         </form>
       </div>
     </div>

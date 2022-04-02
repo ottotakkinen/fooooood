@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
 
 import Recipe from '../components/Recipe';
-import NewRecipe from '../components/NewRecipe/NewRecipe';
-import Button from '../components/UI/Button';
 import SearchBar from '../components/UI/SearchBar';
 import NavBar from '../components/NavBar';
 import MainContainer from '../components/UI/MainContainer';
+import prisma from '../lib/prisma';
 
 const MOCK_RECIPES = [
   {
@@ -77,10 +74,9 @@ const MOCK_RECIPES = [
   },
 ];
 
-const Home = () => {
+const Home = (props) => {
   const [searchInput, setSearchInput] = useState('');
-  const [showNewRecipeModal, setShowNewRecipeModal] = useState(false);
-  const [recipes, setRecipes] = useState(MOCK_RECIPES);
+  const [recipes, setRecipes] = useState(props.recipes);
 
   const filteredRecipes = recipes.filter((recipe) => {
     if (recipe.title.toLowerCase().includes(searchInput.toLowerCase())) {
@@ -98,21 +94,6 @@ const Home = () => {
     return tagFound;
   });
 
-  const addRecipe = (recipe) => {
-    const id = Math.ceil(100000 * Math.random());
-    const newRecipe = { ...recipe, id };
-    setRecipes((prev) => [...prev, newRecipe]);
-  };
-
-  if (showNewRecipeModal) {
-    return (
-      <NewRecipe
-        setShowNewRecipeModal={setShowNewRecipeModal}
-        addRecipe={addRecipe}
-      />
-    );
-  }
-
   return (
     <MainContainer>
       <NavBar />
@@ -123,7 +104,6 @@ const Home = () => {
         </h2>
         <div className="grid grid-cols-4 gap-4 max-w-xl w-full mb-8">
           <SearchBar onChange={setSearchInput} />
-          <Button onClick={() => setShowNewRecipeModal(true)}>New</Button>
         </div>
 
         {filteredRecipes &&
@@ -139,6 +119,17 @@ const Home = () => {
       </footer>
     </MainContainer>
   );
+};
+
+export const getStaticProps = async () => {
+  const res = await prisma.recipe.findMany({
+    where: { public: true },
+  });
+
+  let recipes = [];
+  res.forEach((p) => recipes.push(p));
+
+  return { props: { recipes }, revalidate: 120 };
 };
 
 export default Home;

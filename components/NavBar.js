@@ -1,12 +1,11 @@
 import React from 'react';
 import NavLink from './UI/NavLink';
-import { useAuth } from '../providers/auth';
 import { useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 
 const NavBar = () => {
-  const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const { data: session } = useSession();
   const toggleMenu = () => setMenuOpen((p) => !p);
 
   return (
@@ -45,9 +44,17 @@ const NavBar = () => {
           }`}
         >
           <NavLink href="/">Home</NavLink>
-          {!currentUser && <NavLink href="/login">Login</NavLink>}
-          {!currentUser && <NavLink href="/signup">Sign&nbsp;up</NavLink>}
-          {currentUser && <NavLink href="/logout">Logout</NavLink>}
+          {!session && (
+            <NavLink href="/api/auth/signin">
+              Login&nbsp;with&nbsp;Google
+            </NavLink>
+          )}
+          {session && <NavLink href="/new-recipe">New&nbsp;Recipe</NavLink>}
+          {session && (
+            <NavLink asButton={true} onClick={() => signOut()}>
+              Logout
+            </NavLink>
+          )}
         </div>
       </nav>
     </header>
